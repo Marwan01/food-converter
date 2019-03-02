@@ -39,12 +39,14 @@ export default class CameraScreen extends React.Component {
                 
             </View>
           </Camera>
+
           <Icon
                 raised
                 name='heartbeat'
                 type='font-awesome'
                 color='#f50'
                 onPress={() => this.snap()}/>
+
         </View>
         
       );
@@ -53,7 +55,10 @@ export default class CameraScreen extends React.Component {
   snap = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync();
-      console.log(photo);
+      // console.log(photo.uri);
+      this.props.navigation.navigate('Home', photo)
+      // console.log(this.props, photo);
+
     }
   };
   takePicture() {

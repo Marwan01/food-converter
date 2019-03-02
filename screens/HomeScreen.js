@@ -5,18 +5,60 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  FlatList,
+  View
 } from 'react-native';
 import { WebBrowser } from 'expo';
-
 import { MonoText } from '../components/StyledText';
-
+const axios = require("axios");
+const Clarifai = require('clarifai');
+const clarifai = new Clarifai.App({
+  apiKey: 'c15d3dba1f5645ff8e2a9e8eb19f8150',
+});
+process.nextTick = setImmediate;
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
-
+  state = {
+    hasCameraPermission: null,
+    predictions: [],
+    food: 'bagel',
+    calories: [],
+    url : 'https://www.titosvodka.com/uploads/recipes/_auto1000/ingredient-mango.jpg'
+  };
+  componentDidMount() {
+    this.predict(this.state.url)
+  }
+  calories = async => {
+    axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', { query: this.state.food }, {
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'x-app-key': 'edb7aff4ca908ad45c331d17384bbe95',
+        'x-app-id': '04f8cdf8'
+      }
+    })
+      .then(response => {
+        console.log(this.state.food)
+        console.log(response.data.foods[0].nf_calories)
+        this.setState({ calories: response.data.foods[0].nf_calories })
+      })
+      .catch(error => {
+        console.log("error")
+        console.log(error)
+      })
+  }
+  predict = async image => {
+    let predictions = await clarifai.models.predict(
+      Clarifai.FOOD_MODEL,
+      image
+    );
+    this.setState({ predictions: predictions.outputs[0].data.concepts });
+    this.setState({ food: predictions.outputs[0].data.concepts[0].name });
+    this.calories()
+    // console.log(this.state.predictions)
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -30,12 +72,17 @@ export default class HomeScreen extends React.Component {
               }
               style={styles.welcomeImage}
             />
+            <Image
+              style={{ width: 300, height: 300 }}
+              source={{ uri: this.state.url}}
+            />
+            <Text>{this.state.food}</Text>
+            <Text>{this.state.calories}</Text>
           </View>
         </ScrollView>
-{/* footer */}
+        {/* footer */}
         {/* <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
           <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
             <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
           </View>
@@ -43,7 +90,6 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
       const learnMoreButton = (
@@ -51,7 +97,6 @@ export default class HomeScreen extends React.Component {
           Learn more
         </Text>
       );
-
       return (
         <Text style={styles.developmentModeText}>
           Development mode is enabled, your app will be slower but you can use useful development
@@ -66,18 +111,15 @@ export default class HomeScreen extends React.Component {
       );
     }
   }
-
   _handleLearnMorePress = () => {
     WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
   };
-
   _handleHelpPress = () => {
     WebBrowser.openBrowserAsync(
       'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
     );
   };
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

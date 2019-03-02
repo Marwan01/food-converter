@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "axios": "^0.18.0",
+    "clarifai": "^2.9.0",
     "expo": "^32.0.0",
     "link": "^0.1.5",
     "native-base": "^2.12.0",
