@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Camera, Permissions } from 'expo';
+import { Icon } from 'react-native-elements'
 
-export default class CameraExample extends React.Component {
+
+export default class LinksScreen extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
@@ -29,28 +31,29 @@ export default class CameraExample extends React.Component {
                 backgroundColor: 'transparent',
                 flexDirection: 'row',
               }}>
-              <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  this.setState({
-                    type: this.state.type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back,
-                  });
-                }}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                  {' '}Flip{' '}
-                </Text>
-              </TouchableOpacity>
+              
+
+                
             </View>
           </Camera>
+          <Icon
+                raised
+                name='heartbeat'
+                type='font-awesome'
+                color='#f50'
+                onPress={this.takePicture.bind(this)}/>
         </View>
+        
       );
     }
   }
-    }
+  takePicture() {
+    const options = {}
+
+    this.camera.capture({metadata: options}).then((data) => {
+      console.log(data)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+}
