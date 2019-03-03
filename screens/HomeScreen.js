@@ -40,8 +40,8 @@ export default class HomeScreen extends React.Component {
       }
     })
       .then(response => {
-        console.log(this.state.food)
-        console.log(response.data.foods[0].nf_calories)
+        // console.log(this.state.food)
+        // console.log(response.data.foods[0].nf_calories)
         this.setState({ calories: response.data.foods[0].nf_calories })
       })
       .catch(error => {
@@ -57,7 +57,6 @@ export default class HomeScreen extends React.Component {
     this.setState({ predictions: predictions.outputs[0].data.concepts });
     this.setState({ food: predictions.outputs[0].data.concepts[0].name });
     this.calories()
-    // console.log(this.state.predictions)
   };
   render() {
     return (

@@ -19,7 +19,7 @@ export default class SettingsScreen extends React.Component {
   <List>
     <ListItem thumbnail>
       <Left>
-        <Thumbnail square source={{ uri: '/Users/gheneatudor/Desktop/FoodConverter/assets/images/icon.png' }} />
+        <Thumbnail square source={{ uri: 'https://www.siggraph.org/sites/default/files/org.flat.logo.400_0.jpg' }} />
       </Left>
       <Body>
         <Text>Tudor</Text>

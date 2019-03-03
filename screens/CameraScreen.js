@@ -61,13 +61,5 @@ export default class CameraScreen extends React.Component {
 
     }
   };
-  takePicture() {
-    const options = {}
 
-    this.camera.capture({metadata: options}).then((data) => {
-      console.log(data)
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
 }

@@ -10,7 +10,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "https://www.siggraph.org/sites/default/files/org.flat.logo.400_0.jpg",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
