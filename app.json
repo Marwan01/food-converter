@@ -12,7 +12,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "https://data.whicdn.com/images/300749198/original.gif",
+      "image": "./assets/images/s.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,7 +23,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.yourappname"
+    },
+    "description": "Take a picture of a food item and get instant feedback on the types/amount of workouts you will need to do to burn the calories generated from that food.",
+    "githubUrl": "https://github.com/Marwan01/FoodConverter"
   }
 }

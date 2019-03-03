@@ -87,9 +87,9 @@ export default class InfoScreen extends React.Component {
       />
 
       <Text
-       style={{textAlignVertical: "center",textAlign: "center",fontSize:23,marginBottom:15}}>AI guy says: {a}</Text>
+       style={{textAlignVertical: "center",textAlign: "center",fontSize:23, marginBottom:15}}>AI guy says: {a}</Text>
              <Text
-       style={{textAlignVertical: "center",textAlign: "center",fontSize:16}}>You will need to burn {cal} Calories to make up for this {a}</Text>
+       style={{textAlignVertical: "center",textAlign: "center",fontSize:16}}>You will need to burn {cal} Calories to make up for this {a} or you can do one of the following:</Text>
 
 
 
