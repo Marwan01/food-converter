@@ -31,23 +31,24 @@ export default class HomeScreen extends React.Component {
     this.predict(this.state.url)
   }
   calories = async => {
-    axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', { query: this.state.food }, {
-      headers:
-      {
-        'Content-Type': 'application/json',
-        'x-app-key': 'edb7aff4ca908ad45c331d17384bbe95',
-        'x-app-id': '04f8cdf8'
-      }
-    })
-      .then(response => {
-        // console.log(this.state.food)
-        // console.log(response.data.foods[0].nf_calories)
-        this.setState({ calories: response.data.foods[0].nf_calories })
-      })
-      .catch(error => {
-        console.log("error")
-        console.log(error)
-      })
+    // axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', { query: this.state.food }, {
+    //   headers:
+    //   {
+    //     'Content-Type': 'application/json',
+    //     'x-app-key': 'edb7aff4ca908ad45c331d17384bbe95',
+    //     'x-app-id': '04f8cdf8'
+    //   }
+    // })
+    //   .then(response => {
+    //     // console.log(this.state.food)
+    //     // console.log(response.data.foods[0].nf_calories)
+    //     this.setState({ calories: response.data.foods[0].nf_calories })
+    //   })
+    //   .catch(error => {
+    //     console.log("error")
+    //     console.log(error)
+    //   })
+    this.setState({ calories: 100 })
   }
   predict = async image => {
     let predictions = await clarifai.models.predict(

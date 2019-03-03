@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Camera, Permissions } from 'expo';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 
 export default class CameraScreen extends React.Component {
@@ -42,7 +42,7 @@ export default class CameraScreen extends React.Component {
 
           <Icon
                 raised
-                name='heartbeat'
+                name='camera'
                 type='font-awesome'
                 color='#f50'
                 onPress={() => this.snap()}/>

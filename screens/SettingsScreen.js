@@ -2,6 +2,8 @@ import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
 import { Container, Header, Content, Form, Item, Input, List, ListItem, Thumbnail, Text, Left, Body, Right, Button } from 'native-base';
 import { TextInput } from 'react-native-paper';
+import { Avatar } from 'react-native-elements';
+
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -30,7 +32,14 @@ export default class SettingsScreen extends React.Component {
   <List>
     <ListItem thumbnail>
       <Left>
-        <Thumbnail square source={{ uri: 'https://miro.medium.com/fit/c/240/240/0*Ey_MQF88P6p8MaFi.jpg' }} />
+      <Avatar
+  source={{
+    uri:
+      'https://miro.medium.com/fit/c/240/240/0*Ey_MQF88P6p8MaFi.jpg',
+  }}
+  showEditButton
+/>
+        {/* <Thumbnail square source={{ uri: 'https://miro.medium.com/fit/c/240/240/0*Ey_MQF88P6p8MaFi.jpg' }} /> */}
       </Left>
       <Body>
         <Text>Tudor</Text>
