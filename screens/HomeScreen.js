@@ -59,33 +59,12 @@ export default class HomeScreen extends React.Component {
     this.setState({ food: predictions.outputs[0].data.concepts[0].name });
     this.calories()
   };
-  predict2 = async image => {
-    let predictions = await clarifai.models.predict(
-      Clarifai.FOOD_MODEL,
-      image
-    )
-    return predictions.outputs[0].data.concepts[0].name
-  };
-
-  componentWillReceiveProps(nextProps){
-    
-    const first = nextProps.navigation.state.hasOwnProperty('params')
-  if(first){
-  this.predict2(nextProps.navigation.state.params.base64).then(function (result) {
-      console.log(result)    })
-
-  }
-
-  }
-
   render() {
     const first = this.props.navigation.state.hasOwnProperty('params')
     let im;
     let a =  this.state.food
     if (first == true) {
-      this.predict2(this.props.navigation.state.params.base64).then(function (result) {
-        // console.log(result)
-      })
+      a= this.props.navigation.state.params.pred
       im = <Image
         style={{ width: 300, height: 300 }}
         source={{ uri: this.props.navigation.state.params.uri }}
@@ -111,7 +90,6 @@ export default class HomeScreen extends React.Component {
             />
 
             {im}
-            <Text>{this.state.food}</Text>
             <Text>{a}</Text>
             <Text>{this.state.calories}</Text>
           </View>

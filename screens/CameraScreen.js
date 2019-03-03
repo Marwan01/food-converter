@@ -4,7 +4,11 @@ import { Camera, Permissions } from 'expo';
 import { Icon } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-
+const Clarifai = require('clarifai');
+const clarifai = new Clarifai.App({
+  apiKey: 'c15d3dba1f5645ff8e2a9e8eb19f8150',
+});
+process.nextTick = setImmediate;
 
 
 export default class CameraScreen extends React.Component {
@@ -80,6 +84,11 @@ export default class CameraScreen extends React.Component {
   snap = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync({base64:true});
+      console.log("before")
+
+      let predictions = await clarifai.models.predict(Clarifai.FOOD_MODEL, photo.base64);
+      photo.pred = predictions.outputs[0].data.concepts[0].name
+      console.log("after")
       this.props.navigation.navigate('Home', photo)
       this.camera.stopRecording();
       this.setState({
