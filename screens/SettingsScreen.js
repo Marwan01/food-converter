@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
-import { Container, Header, Content, Form, Item, Input } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, List, ListItem, Thumbnail, Text, Left, Body, Right, Button } from 'native-base';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -14,8 +14,24 @@ export default class SettingsScreen extends React.Component {
     return (
     
       <Container>
-      <Header />
-      <Content>
+        <Header />
+<Content>
+  <List>
+    <ListItem thumbnail>
+      <Left>
+        <Thumbnail square source={{ uri: '/Users/gheneatudor/Desktop/FoodConverter/assets/images/icon.png' }} />
+      </Left>
+      <Body>
+        <Text>Tudor</Text>
+        <Text note numberOfLines={1}>My Profile</Text>
+      </Body>
+      <Right>
+        <Button transparent>
+          <Text>View</Text>
+        </Button>
+      </Right>
+    </ListItem>
+  </List>
         <Form>
           <Item>
             <Input placeholder="Weight" />
@@ -24,10 +40,12 @@ export default class SettingsScreen extends React.Component {
             <Input placeholder="Height" />
           </Item>
         </Form>
-      </Content>
+        </Content>
     </Container>
     // <ExpoConfigView />
     );
 
   }
 }
+
+

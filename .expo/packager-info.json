@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 12600,
-  "expoServerNgrokUrl": "https://yn-x3y.anonymous.foodconverter.exp.direct",
-  "packagerNgrokUrl": "https://packager.yn-x3y.anonymous.foodconverter.exp.direct",
-  "ngrokPid": 12620
+  "packagerPort": 19003,
+  "packagerPid": 63993,
+  "expoServerNgrokUrl": "https://x8-p96.anonymous.foodconverter.exp.direct",
+  "packagerNgrokUrl": "https://packager.x8-p96.anonymous.foodconverter.exp.direct",
+  "ngrokPid": 64004
 }
