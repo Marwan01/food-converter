@@ -19,7 +19,7 @@ export default class SettingsScreen extends React.Component {
   <List>
     <ListItem thumbnail>
       <Left>
-        <Thumbnail square source={{ uri: 'https://www.siggraph.org/sites/default/files/org.flat.logo.400_0.jpg' }} />
+        <Thumbnail square source={{ uri: 'https://miro.medium.com/fit/c/240/240/0*Ey_MQF88P6p8MaFi.jpg' }} />
       </Left>
       <Body>
         <Text>Tudor</Text>
