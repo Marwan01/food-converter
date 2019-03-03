@@ -81,13 +81,19 @@ export default class InfoScreen extends React.Component {
           flexDirection: 'column',
           justifyContent: 'flex-end',
           alignItems: 'center',
+          marginBottom:'5%'
         }}
         source={{ uri:im }}
       />
+
       <Text
-       style={{textAlignVertical: "center",textAlign: "center",fontSize:23}}>{a}</Text>
+       style={{textAlignVertical: "center",textAlign: "center",fontSize:23,marginBottom:15}}>AI guy says: {a}</Text>
              <Text
-       style={{textAlignVertical: "center",textAlign: "center",fontSize:16}}>{cal}</Text>
+       style={{textAlignVertical: "center",textAlign: "center",fontSize:16}}>You will need to burn {cal} Calories to make up for this {a}</Text>
+
+
+
+
         <View style={styles.list}>
           {list2.map((l, i) => (
             <ListItem

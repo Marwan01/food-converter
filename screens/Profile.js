@@ -144,19 +144,9 @@ export default class Profile extends Component {
                     fontFamily: 'bold',
                   }}
                 >
-                  Micheal
+                  Mike
                 </Text>
-                <Text
-                  style={{
-                    flex: 0.5,
-                    fontSize: 15,
-                    color: 'gray',
-                    textAlign: 'left',
-                    marginTop: 5,
-                  }}
-                >
-                  Scranton
-                </Text>
+
                 <Text
                   style={{
                     flex: 1,
@@ -166,7 +156,7 @@ export default class Profile extends Component {
                     textAlign: 'right',
                   }}
                 >
-                  Pennsylvania
+                  Scranton
                 </Text>
               </View>
               <View
