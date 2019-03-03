@@ -66,7 +66,7 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: 'Welcome',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -76,8 +76,9 @@ SettingsStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
+  SettingsStack,
   InfoStack,
   CameraStack,
   ProfileStack,
-  SettingsStack
+  
 });

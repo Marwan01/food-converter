@@ -3,15 +3,20 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import { Icon } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
-
-
+const axios = require("axios");
+const Clarifai = require('clarifai');
+const clarifai = new Clarifai.App({
+  apiKey: 'c15d3dba1f5645ff8e2a9e8eb19f8150',
+});
+process.nextTick = setImmediate;
 
 
 export default class CameraScreen extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
-    spinner: false
+    spinner: false,
+    calories:0
 
   };
 
@@ -20,7 +25,27 @@ export default class CameraScreen extends React.Component {
     this.setState({ hasCameraPermission: status === 'granted' });
   }
 
-  
+  calories = (q) => {
+     axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', { query: q}, {
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'x-app-key': '20063fe67146bc6e07993cfc79b04b66',
+        'x-app-id': 'a04a439c'
+      }
+    })
+      .then(response => {
+        console.log(response.data.foods[0].nf_calories)
+        this.setState({ calories: response.data.foods[0].nf_calories })
+      })
+      .catch(error => {
+        console.log("error")
+        console.log(error)
+        return -1
+      })
+    // this.setState({ calories: 100 })
+  }
+
   render() {
     
     const { hasCameraPermission } = this.state;
@@ -80,6 +105,18 @@ export default class CameraScreen extends React.Component {
   snap = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync({base64:true});
+
+      let predictions = await clarifai.models.predict(Clarifai.FOOD_MODEL, photo.base64);
+      photo.pred = predictions.outputs[0].data.concepts[0].name
+      let cals =  await axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', { query: photo.pred}, {
+        headers:
+        {
+          'Content-Type': 'application/json',
+          'x-app-key': '20063fe67146bc6e07993cfc79b04b66',
+          'x-app-id': 'a04a439c'
+        }
+      });
+      photo.cal= cals.data.foods[0].nf_calories
       this.props.navigation.navigate('Info', photo)
       this.camera.stopRecording();
       this.setState({

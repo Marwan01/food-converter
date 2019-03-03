@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 26145,
-  "expoServerNgrokUrl": "https://ub-kt2.anonymous.foodconverter.exp.direct",
-  "packagerNgrokUrl": "https://packager.ub-kt2.anonymous.foodconverter.exp.direct",
-  "ngrokPid": 26159
+  "devToolsPort": 19003,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
