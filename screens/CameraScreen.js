@@ -54,7 +54,7 @@ export default class CameraScreen extends React.Component {
   }
   snap = async () => {
     if (this.camera) {
-      let photo = await this.camera.takePictureAsync();
+      let photo = await this.camera.takePictureAsync({base64:true});
       // console.log(photo.uri);
       this.props.navigation.navigate('Home', photo)
       // console.log(this.props, photo);
