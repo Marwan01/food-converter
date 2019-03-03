@@ -1,10 +1,14 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
 import { Container, Header, Content, Form, Item, Input, List, ListItem, Thumbnail, Text, Left, Body, Right, Button } from 'native-base';
+import { TextInput } from 'react-native-paper';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'app.json',
+  };
+  state = {
+    text: ''
   };
 
   render() {
@@ -12,8 +16,15 @@ export default class SettingsScreen extends React.Component {
      * content, we just wanted to give you a quick view of your config */
 
     return (
+
     
       <Container>
+        <TextInput
+        Type='outlined'
+        label='Email'
+        value={this.state.text}
+        onChangeText={text => this.setState({ text })}
+      />
         <Header />
 <Content>
   <List>
