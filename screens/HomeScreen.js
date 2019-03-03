@@ -27,50 +27,22 @@ export default class HomeScreen extends React.Component {
     url: 'https://www.titosvodka.com/uploads/recipes/_auto1000/ingredient-mango.jpg',
     count:0
   };
-  componentDidMount() {
-    this.predict(this.state.url)
-  }
-  calories = async => {
-    // axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', { query: this.state.food }, {
-    //   headers:
-    //   {
-    //     'Content-Type': 'application/json',
-    //     'x-app-key': 'edb7aff4ca908ad45c331d17384bbe95',
-    //     'x-app-id': '04f8cdf8'
-    //   }
-    // })
-    //   .then(response => {
-    //     // console.log(this.state.food)
-    //     // console.log(response.data.foods[0].nf_calories)
-    //     this.setState({ calories: response.data.foods[0].nf_calories })
-    //   })
-    //   .catch(error => {
-    //     console.log("error")
-    //     console.log(error)
-    //   })
-    this.setState({ calories: 100 })
-  }
-  predict = async image => {
-    let predictions = await clarifai.models.predict(
-      Clarifai.FOOD_MODEL,
-      image
-    );
-    this.setState({ predictions: predictions.outputs[0].data.concepts });
-    this.setState({ food: predictions.outputs[0].data.concepts[0].name });
-    this.calories()
-  };
   render() {
     const first = this.props.navigation.state.hasOwnProperty('params')
     let im;
-    let a =  this.state.food
+    let a = ""
+    let cal = this.state.calories
     if (first == true) {
-      a= this.props.navigation.state.params.pred
+        console.log(this.props.navigation.state.params.pred)
+        a=this.props.navigation.state.params.pred
+        cal = this.props.navigation.state.params.cal
       im = <Image
         style={{ width: 300, height: 300 }}
         source={{ uri: this.props.navigation.state.params.uri }}
       />
     }
     else {
+      a = "default"
       im = <Image
         style={{ width: 100, height: 100 }}
         source={{ uri: this.state.url }}
@@ -91,7 +63,7 @@ export default class HomeScreen extends React.Component {
 
             {im}
             <Text>{a}</Text>
-            <Text>{this.state.calories}</Text>
+            <Text>{cal}</Text>
           </View>
         </ScrollView>
         {/* footer */}
