@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 18036,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://3m-trt.anonymous.foodconverter.exp.direct",
   "packagerNgrokUrl": "https://packager.3m-trt.anonymous.foodconverter.exp.direct",
-  "ngrokPid": 18064
+  "ngrokPid": 20943
 }
