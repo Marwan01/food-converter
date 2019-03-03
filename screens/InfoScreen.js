@@ -4,13 +4,21 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
+  ListItem,
   Text,
   FlatList,
-  View
+  View,
+  ImageBackground,
+  Dimensions
 } from 'react-native';
+import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body } from 'native-base';
+import colors from '../assets/colors';
+import TouchableScale from 'react-native-touchable-scale';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 const axios = require("axios");
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 const Clarifai = require('clarifai');
 const clarifai = new Clarifai.App({
   apiKey: 'c15d3dba1f5645ff8e2a9e8eb19f8150',
@@ -29,167 +37,50 @@ export default class InfoScreen extends React.Component {
   };
   render() {
     const first = this.props.navigation.state.hasOwnProperty('params')
-    let im;
+    let im="";
     let a = ""
-    let cal = this.state.calories
+    let cal = 0;
     if (first == true) {
+
         console.log(this.props.navigation.state.params.pred)
         a=this.props.navigation.state.params.pred
         cal = this.props.navigation.state.params.cal
-      im = <Image
-        style={{ width: 300, height: 300 }}
-        source={{ uri: this.props.navigation.state.params.uri }}
-      />
+      im = this.props.navigation.state.params.uri 
     }
     else {
       a = "default"
-      im = <Image
-        style={{ width: 100, height: 100 }}
-        source={{ uri: this.state.url }}
-      />
+      im = ""
     }
+    const list2 = [
+      {
+        workout: 'Push ups',
+        value: cal * 0.97,
+        linearGradientColors: ['#FF9800', '#F44336'],
+      },
+      {
+        workout: 'Miles of Jogging',
+        value: cal/ 140,
+        linearGradientColors: ['#FF9800', '#F44336'],
+      }
+    
+    ]
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-            {im}
-            <Text>{a}</Text>
-            <Text>{cal}</Text>
-          </View>
-        </ScrollView>
-        {/* footer */}
-        {/* <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View> */}
-      </View>
+      <View>
+      <View
+      style={[
+        { backgroundColor: '#FF9800', marginTop: 20 },
+      ]}
+    >
+      <Icon color="white" name="magic" size={62} type="font-awesome" />
+    </View>
+    <View style={{ backgroundColor: '#ECEFF1', paddingVertical: 8 }}>
+      <ListItem
+      title = {a}>{a}
+        
+      </ListItem>
+    </View>
+    </View>
     );
   }
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
+ 
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
-});
