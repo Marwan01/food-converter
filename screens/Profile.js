@@ -232,8 +232,13 @@ export default class Profile extends Component {
                 >
                   INFO
                 </Text>
-                
-                <TextInput
+            <View
+                              style={{
+                                flex: 1,
+                                margin: 25,
+                              }}
+            >
+            <TextInput
               onChangeText={(text) => this.setState({text})}
               placeholder= {this.state.text}
               label='Age'
@@ -254,6 +259,7 @@ export default class Profile extends Component {
               label='Height'
               mode= 'outlined'
             />
+            </View>
                 
               </View>
               <Button
