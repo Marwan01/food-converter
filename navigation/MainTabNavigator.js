@@ -28,11 +28,12 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: CameraScreen,
+
+const CameraStack = createStackNavigator({
+  Camera: CameraScreen,
 });
 
-LinksStack.navigationOptions = {
+CameraStack.navigationOptions = {
   tabBarLabel: 'Camera',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -42,8 +43,26 @@ LinksStack.navigationOptions = {
   ),
 };
 
+const ProfileStack = createStackNavigator({
+  profile: Profile,
+});
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'profile',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
 const SettingsStack = createStackNavigator({
-  Settings: Profile,
+  Settings: SettingsScreen,
 });
 
 SettingsStack.navigationOptions = {
@@ -58,6 +77,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  CameraStack,
+  ProfileStack,
+  SettingsStack
 });
