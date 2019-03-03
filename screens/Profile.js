@@ -23,15 +23,17 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const IMAGE_SIZE = SCREEN_WIDTH - 80;
 
+
 class CustomButton extends Component {
   constructor() {
     super();
 
     this.state = {
       selected: false,
-      text: ' ',
+      text: ' ', 
       text1: ' ',
       text2: ' ',
+      text3: ' ',
     };
   }
 
@@ -42,6 +44,13 @@ class CustomButton extends Component {
       selected,
     });
   }
+
+  updateText = () => {
+    this.setState({
+      textValue: 'Saving...'
+    })
+  }
+
 
   render() {
     const { title } = this.props;
@@ -206,20 +215,17 @@ export default class Profile extends Component {
                         marginRight: 10,
                       }}
                     >
-                      <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <CustomButton title="Jogging" />
-                        <CustomButton title="Swimming" selected={true} />
-                        <CustomButton title="Dancing" selected={true} />
+                     <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <CustomButton title="Jumping Jacks" selected={true} />
+                        <CustomButton title="Burpees" selected={true} />
                       </View>
                       <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <CustomButton title="Tennis" selected={true} />
                         <CustomButton title="Pull-ups" selected={true} />
                         <CustomButton title="Sit-ups" selected={true} />
                       </View>
                       <View style={{ flex: 1, flexDirection: 'row' }}>
                       <CustomButton title="Squats" selected={true} />
                         <CustomButton title="Push-ups" selected={true} />
-                        <CustomButton title="Basketball" selected={true} />
                       </View>
                     </View>
                   </ScrollView>
@@ -241,45 +247,41 @@ export default class Profile extends Component {
 
 <View
             style={{
-              backgroundColor: 'rgba(46, 50, 72, 1)',
+              backgroundColor: 'White',
               width: SCREEN_WIDTH,
               alignItems: 'center',
             }}
           >
             <Text
               style={{
-                color: 'white',
+                color: 'grey',
                 fontSize: 30,
                 marginVertical: 10,
                 fontWeight: '300',
               }}
             >
-              Sign up
+              
             </Text>
             <Input
               inputContainerStyle={{
                 borderRadius: 40,
                 borderWidth: 1,
-                borderColor: 'rgba(110, 120, 170, 1)',
+                borderColor: 'rgba(249, 143, 5, 0.63)',
                 height: 50,
                 width: SCREEN_WIDTH - 50,
                 marginVertical: 10,
               }}
-              leftIcon={
-                <SimpleIcon
-                  name="user"
-                  color="rgba(110, 120, 170, 1)"
-                  size={25}
-                />
-              }
+              onChangeText={(text) => this.setState({text})}
+              placeholder= {this.state.text}
               iconContainerStyle={{ marginLeft: 20 }}
-              placeholder="Username"
-              placeholderTextColor="rgba(110, 120, 170, 1)"
-              inputStyle={{ marginLeft: 10, color: 'white' }}
+              label='Age'
+              placeholder="years" 
+              placeholderTextColor="rgba(249, 143, 5, 0.63)"
+              inputStyle={{ marginLeft: 10, color: 'gray' }}
               autoCapitalize="none"
               autoCorrect={false}
               keyboardAppearance="light"
-              keyboardType="email-address"
+              keyboardType="numeric"
               returnKeyType="next"
               ref={input => (this.usernameInput = input)}
               onSubmitEditing={() => {
@@ -291,26 +293,22 @@ export default class Profile extends Component {
               inputContainerStyle={{
                 borderRadius: 40,
                 borderWidth: 1,
-                borderColor: 'rgba(110, 120, 170, 1)',
+                borderColor: 'rgba(249, 143, 5, 0.63)',
                 height: 50,
                 width: SCREEN_WIDTH - 50,
                 marginVertical: 10,
               }}
-              leftIcon={
-                <MaterialIcon
-                  name="email-outline"
-                  color="rgba(110, 120, 170, 1)"
-                  size={25}
-                />
-              }
+              onChangeText={(text1) => this.setState({text1})}
+              placeholder= {this.state.text1}
               iconContainerStyle={{ marginLeft: 20 }}
-              placeholder="Email"
-              placeholderTextColor="rgba(110, 120, 170, 1)"
-              inputStyle={{ marginLeft: 10, color: 'white' }}
+              label='Weight'
+              placeholder="lbs"
+              placeholderTextColor="rgba(249, 143, 5, 0.63)"
+              inputStyle={{ marginLeft: 10, color: 'gray' }}
               autoCapitalize="none"
               autoCorrect={false}
               keyboardAppearance="light"
-              keyboardType="email-address"
+              keyboardType="numeric"
               returnKeyType="next"
               ref={input => (this.email2Input = input)}
               onSubmitEditing={() => {
@@ -322,27 +320,22 @@ export default class Profile extends Component {
               inputContainerStyle={{
                 borderRadius: 40,
                 borderWidth: 1,
-                borderColor: 'rgba(110, 120, 170, 1)',
+                borderColor: 'rgba(249, 143, 5, 0.63)',
                 height: 50,
                 width: SCREEN_WIDTH - 50,
                 marginVertical: 10,
               }}
-              leftIcon={
-                <SimpleIcon
-                  name="lock"
-                  color="rgba(110, 120, 170, 1)"
-                  size={25}
-                />
-              }
+              onChangeText={(text2) => this.setState({text2})}
+              placeholder= {this.state.text2}
               iconContainerStyle={{ marginLeft: 20 }}
-              placeholder="Password"
-              placeholderTextColor="rgba(110, 120, 170, 1)"
-              inputStyle={{ marginLeft: 10, color: 'white' }}
+              label='Height'
+              placeholder="ft"
+              placeholderTextColor="rgba(249, 143, 5, 0.63)"
+              inputStyle={{ marginLeft: 10, color: 'gray' }}
               autoCapitalize="none"
               keyboardAppearance="light"
-              secureTextEntry={true}
               autoCorrect={false}
-              keyboardType="default"
+              keyboardType="numeric"
               returnKeyType="next"
               ref={input => (this.password2Input = input)}
               onSubmitEditing={() => {
@@ -350,40 +343,13 @@ export default class Profile extends Component {
               }}
               blurOnSubmit={false}
             />
-            <Input
-              inputContainerStyle={{
-                borderRadius: 40,
-                borderWidth: 1,
-                borderColor: 'rgba(110, 120, 170, 1)',
-                height: 50,
-                width: SCREEN_WIDTH - 50,
-                marginTop: 10,
-                marginBottom: 30,
-              }}
-              leftIcon={
-                <SimpleIcon
-                  name="lock"
-                  color="rgba(110, 120, 170, 1)"
-                  size={25}
-                />
-              }
-              iconContainerStyle={{ marginLeft: 20 }}
-              placeholder="Confirm Password"
-              placeholderTextColor="rgba(110, 120, 170, 1)"
-              inputStyle={{ marginLeft: 10, color: 'white' }}
-              autoCapitalize="none"
-              keyboardAppearance="light"
-              secureTextEntry={true}
-              autoCorrect={false}
-              keyboardType="default"
-              returnKeyType="done"
-              ref={input => (this.confirmPassword2Input = input)}
-              blurOnSubmit={true}
-            />
+            
             </View>
                 
               </View>
-              <Button
+             
+              
+              <Button 
                 containerStyle={{ marginVertical: 20 }}
                 style={{
                   flex: 1,
@@ -402,15 +368,17 @@ export default class Profile extends Component {
                   start: [1, 0],
                   end: [0.2, 0],
                 }}
-                title="Save"
+                title="Save" 
                 titleStyle={{
                   fontFamily: 'regular',
                   fontSize: 20,
                   color: 'grey',
-                  textAlign: 'center',
+                  textAlign: 'center'
                 }}
                 onPress={() => console.log(' Submit')}
-                onChangeText={(text) => this.setState({text})}
+                
+                 onChangeText={(text3) => this.setState({textValue})}
+                 placeholder={this.state.textValue}
                 activeOpacity={0.5}
               />
             </ScrollView>
