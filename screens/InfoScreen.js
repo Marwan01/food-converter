@@ -1,24 +1,21 @@
 import React from 'react';
+import { View, ScrollView, StyleSheet, Image, ListView } from 'react-native';
+
 import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  ListItem,
   Text,
-  FlatList,
-  View,
-  ImageBackground,
-  Dimensions
-} from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body } from 'native-base';
-import colors from '../assets/colors';
+  Card,
+  Tile,
+  Icon,
+  ListItem,
+  Title,
+  Avatar,
+} from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
+
+import colors from '../assets/colors';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 const axios = require("axios");
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 const Clarifai = require('clarifai');
 const clarifai = new Clarifai.App({
   apiKey: 'c15d3dba1f5645ff8e2a9e8eb19f8150',
@@ -38,11 +35,10 @@ export default class InfoScreen extends React.Component {
   render() {
     const first = this.props.navigation.state.hasOwnProperty('params')
     let im="";
-    let a = ""
+    let a = "";
     let cal = 0;
     if (first == true) {
 
-        console.log(this.props.navigation.state.params.pred)
         a=this.props.navigation.state.params.pred
         cal = this.props.navigation.state.params.cal
       im = this.props.navigation.state.params.uri 
@@ -53,34 +49,128 @@ export default class InfoScreen extends React.Component {
     }
     const list2 = [
       {
-        workout: 'Push ups',
-        value: cal * 0.97,
+        name: 'Push ups',
+        subtitle: 'Number of Reps',
         linearGradientColors: ['#FF9800', '#F44336'],
+        rightTitle: cal * 0.83,
+        rightSubtitle:"reps"
       },
       {
-        workout: 'Miles of Jogging',
-        value: cal/ 140,
+        name: 'Swimming',
+        subtitle: 'Time spent swimming at normal pace',
         linearGradientColors: ['#FF9800', '#F44336'],
-      }
-    
-    ]
+        rightTitle: ((cal / 800 ) * 60 ),
+        rightSubtitle:"Mins"
+      },
+      {
+        name: 'Jogging',
+        subtitle: 'Running at normal pace',
+        linearGradientColors: ['#FF9800', '#F44336'],
+        rightTitle: cal / 140,
+        rightSubtitle:"in miles"
+      },    
+    ];
     return (
-      <View>
-      <View
-      style={[
-        { backgroundColor: '#FF9800', marginTop: 20 },
-      ]}
-    >
-      <Icon color="white" name="magic" size={62} type="font-awesome" />
+      <View style={{ flex: 1 }}
+     >
+      <Image
+        style={{
+          
+          flex: 1,
+          maxHeight:'60%',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}
+        source={{ uri:im }}
+      />
+      <Text
+       style={{textAlignVertical: "center",textAlign: "center",fontSize:23}}>{a}</Text>
+             <Text
+       style={{textAlignVertical: "center",textAlign: "center",fontSize:16}}>{cal}</Text>
+        <View style={styles.list}>
+          {list2.map((l, i) => (
+            <ListItem
+              key={i}
+
+
+              leftIcon={{
+                name: 'user-circle-o',
+                type: 'font-awesome',
+                color: 'blue',
+              }}
+
+
+              title={l.name}
+              titleStyle={{ color: 'red' }}
+              subtitle={l.subtitle}
+              rightTitle={Math.round(l.rightTitle,2).toString()}
+              rightTitleStyle={{ color: 'green' }}
+              rightSubtitle={l.rightSubtitle}
+              bottomDivider
+            />
+          ))}
+        </View>
+
     </View>
-    <View style={{ backgroundColor: '#ECEFF1', paddingVertical: 8 }}>
-      <ListItem
-      title = {a}>{a}
-        
-      </ListItem>
-    </View>
-    </View>
+
     );
   }
  
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  list: {
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderColor: colors.greyOutline,
+    backgroundColor: '#fff',
+  },
+  headerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 40,
+    backgroundColor: '#FD6B78',
+  },
+  heading: {
+    color: 'white',
+    marginTop: 10,
+    fontSize: 22,
+  },
+  fonts: {
+    marginBottom: 8,
+  },
+  user: {
+    flexDirection: 'row',
+    marginBottom: 6,
+  },
+  image: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
+  name: {
+    fontSize: 16,
+    marginTop: 5,
+  },
+  social: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  subtitleView: {
+    flexDirection: 'row',
+    paddingLeft: 10,
+    paddingTop: 5,
+  },
+  ratingImage: {
+    height: 19.21,
+    width: 100,
+  },
+  ratingText: {
+    paddingLeft: 10,
+    color: 'grey',
+  },
+});
