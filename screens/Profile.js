@@ -9,8 +9,15 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Input, SearchBar, Icon, Button } from 'react-native-elements';
 import { Font } from 'expo';
+import { TextInput } from 'react-native-paper';
+
+
+import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -22,6 +29,9 @@ class CustomButton extends Component {
 
     this.state = {
       selected: false,
+      text: ' ',
+      text1: ' ',
+      text2: ' ',
     };
   }
 
@@ -40,11 +50,11 @@ class CustomButton extends Component {
     return (
       <Button
         title={title}
-        titleStyle={{ fontSize: 15, color: 'white', fontFamily: 'regular' }}
+        titleStyle={{ fontSize: 15, color: 'grey', fontFamily: 'regular' }}
         buttonStyle={
           selected
             ? {
-                backgroundColor: 'rgba(213, 100, 140, 1)',
+                backgroundColor: 'rgba(249, 143, 5, 0.63)',
                 borderRadius: 100,
                 width: 127,
               }
@@ -88,17 +98,17 @@ export default class Profile extends Component {
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="light-content" />
         {this.state.fontLoaded ? (
-          <View style={{ flex: 1, backgroundColor: 'rgba(47,44,60,1)' }}>
+          <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.67)' }}>
             <View style={styles.statusBar} />
             <View style={styles.navBar}>
-              <Text style={styles.nameHeader}>Theresa, 26</Text>
+              <Text style={styles.nameHeader}>Micheal Scott, 40</Text>
             </View>
             <ScrollView style={{ flex: 1 }}>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Image
                   source={{
                     uri:
-                      'https://static.pexels.com/photos/428336/pexels-photo-428336.jpeg',
+                      'https://www.bluleadz.com/hs-fs/hubfs/Blog_pics/PrisonMike.jpeg?width=1196&name=PrisonMike.jpeg',
                   }}
                   style={{
                     width: IMAGE_SIZE,
@@ -121,11 +131,11 @@ export default class Profile extends Component {
                   style={{
                     flex: 1,
                     fontSize: 26,
-                    color: 'white',
+                    color: 'grey',
                     fontFamily: 'bold',
                   }}
                 >
-                  Theresa
+                  Micheal
                 </Text>
                 <Text
                   style={{
@@ -136,18 +146,18 @@ export default class Profile extends Component {
                     marginTop: 5,
                   }}
                 >
-                  0.8 mi
+                  Scranton
                 </Text>
                 <Text
                   style={{
                     flex: 1,
-                    fontSize: 26,
-                    color: 'green',
+                    fontSize: 19,
+                    color: 'grey',
                     fontFamily: 'bold',
                     textAlign: 'right',
                   }}
                 >
-                  84%
+                  Pennsylvania
                 </Text>
               </View>
               <View
@@ -162,12 +172,11 @@ export default class Profile extends Component {
                   style={{
                     flex: 1,
                     fontSize: 15,
-                    color: 'white',
+                    color: 'grey',
                     fontFamily: 'regular',
                   }}
                 >
-                  100% Italian, fun loving, affectionate, young lady who knows
-                  what it takes to make a relationship work.
+                "I need a username, and I have a great one. "Little Kid Lover". That way people will know exactly where my priorities are at"
                 </Text>
               </View>
               <View style={{ flex: 1, marginTop: 30 }}>
@@ -198,22 +207,19 @@ export default class Profile extends Component {
                       }}
                     >
                       <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <CustomButton title="Philosophy" selected={true} />
-                        <CustomButton title="Sport" />
+                        <CustomButton title="Jogging" />
                         <CustomButton title="Swimming" selected={true} />
-                        <CustomButton title="Religion" />
+                        <CustomButton title="Dancing" selected={true} />
                       </View>
                       <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <CustomButton title="Music" />
-                        <CustomButton title="Soccer" selected={true} />
-                        <CustomButton title="Radiohead" selected={true} />
-                        <CustomButton title="Micheal Jackson" />
+                        <CustomButton title="Tennis" selected={true} />
+                        <CustomButton title="Pull-ups" selected={true} />
+                        <CustomButton title="Sit-ups" selected={true} />
                       </View>
                       <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <CustomButton title="Travelling" selected={true} />
-                        <CustomButton title="Rock'n'Roll" />
-                        <CustomButton title="Dogs" selected={true} />
-                        <CustomButton title="France" selected={true} />
+                      <CustomButton title="Squats" selected={true} />
+                        <CustomButton title="Push-ups" selected={true} />
+                        <CustomButton title="Basketball" selected={true} />
                       </View>
                     </View>
                   </ScrollView>
@@ -231,47 +237,151 @@ export default class Profile extends Component {
                 >
                   INFO
                 </Text>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    marginTop: 20,
-                    marginHorizontal: 30,
-                  }}
-                >
-                  <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.infoTypeLabel}>Age</Text>
-                      <Text style={styles.infoTypeLabel}>Height</Text>
-                      <Text style={styles.infoTypeLabel}>Ethnicity</Text>
-                      <Text style={styles.infoTypeLabel}>Sign</Text>
-                      <Text style={styles.infoTypeLabel}>Religion</Text>
-                    </View>
-                    <View style={{ flex: 1, marginLeft: 10 }}>
-                      <Text style={styles.infoAnswerLabel}>26</Text>
-                      <Text style={styles.infoAnswerLabel}>5'4"</Text>
-                      <Text style={styles.infoAnswerLabel}>White</Text>
-                      <Text style={styles.infoAnswerLabel}>Pisces</Text>
-                      <Text style={styles.infoAnswerLabel}>Catholic</Text>
-                    </View>
-                  </View>
-                  <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.infoTypeLabel}>Body Type</Text>
-                      <Text style={styles.infoTypeLabel}>Diet</Text>
-                      <Text style={styles.infoTypeLabel}>Smoke</Text>
-                      <Text style={styles.infoTypeLabel}>Drink</Text>
-                      <Text style={styles.infoTypeLabel}>Drugs</Text>
-                    </View>
-                    <View style={{ flex: 1, marginLeft: 10, marginRight: -20 }}>
-                      <Text style={styles.infoAnswerLabel}>Fit</Text>
-                      <Text style={styles.infoAnswerLabel}>Vegan</Text>
-                      <Text style={styles.infoAnswerLabel}>No</Text>
-                      <Text style={styles.infoAnswerLabel}>No</Text>
-                      <Text style={styles.infoAnswerLabel}>Never</Text>
-                    </View>
-                  </View>
-                </View>
+
+
+<View
+            style={{
+              backgroundColor: 'rgba(46, 50, 72, 1)',
+              width: SCREEN_WIDTH,
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 30,
+                marginVertical: 10,
+                fontWeight: '300',
+              }}
+            >
+              Sign up
+            </Text>
+            <Input
+              inputContainerStyle={{
+                borderRadius: 40,
+                borderWidth: 1,
+                borderColor: 'rgba(110, 120, 170, 1)',
+                height: 50,
+                width: SCREEN_WIDTH - 50,
+                marginVertical: 10,
+              }}
+              leftIcon={
+                <SimpleIcon
+                  name="user"
+                  color="rgba(110, 120, 170, 1)"
+                  size={25}
+                />
+              }
+              iconContainerStyle={{ marginLeft: 20 }}
+              placeholder="Username"
+              placeholderTextColor="rgba(110, 120, 170, 1)"
+              inputStyle={{ marginLeft: 10, color: 'white' }}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardAppearance="light"
+              keyboardType="email-address"
+              returnKeyType="next"
+              ref={input => (this.usernameInput = input)}
+              onSubmitEditing={() => {
+                this.email2Input.focus();
+              }}
+              blurOnSubmit={false}
+            />
+            <Input
+              inputContainerStyle={{
+                borderRadius: 40,
+                borderWidth: 1,
+                borderColor: 'rgba(110, 120, 170, 1)',
+                height: 50,
+                width: SCREEN_WIDTH - 50,
+                marginVertical: 10,
+              }}
+              leftIcon={
+                <MaterialIcon
+                  name="email-outline"
+                  color="rgba(110, 120, 170, 1)"
+                  size={25}
+                />
+              }
+              iconContainerStyle={{ marginLeft: 20 }}
+              placeholder="Email"
+              placeholderTextColor="rgba(110, 120, 170, 1)"
+              inputStyle={{ marginLeft: 10, color: 'white' }}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardAppearance="light"
+              keyboardType="email-address"
+              returnKeyType="next"
+              ref={input => (this.email2Input = input)}
+              onSubmitEditing={() => {
+                this.password2Input.focus();
+              }}
+              blurOnSubmit={false}
+            />
+            <Input
+              inputContainerStyle={{
+                borderRadius: 40,
+                borderWidth: 1,
+                borderColor: 'rgba(110, 120, 170, 1)',
+                height: 50,
+                width: SCREEN_WIDTH - 50,
+                marginVertical: 10,
+              }}
+              leftIcon={
+                <SimpleIcon
+                  name="lock"
+                  color="rgba(110, 120, 170, 1)"
+                  size={25}
+                />
+              }
+              iconContainerStyle={{ marginLeft: 20 }}
+              placeholder="Password"
+              placeholderTextColor="rgba(110, 120, 170, 1)"
+              inputStyle={{ marginLeft: 10, color: 'white' }}
+              autoCapitalize="none"
+              keyboardAppearance="light"
+              secureTextEntry={true}
+              autoCorrect={false}
+              keyboardType="default"
+              returnKeyType="next"
+              ref={input => (this.password2Input = input)}
+              onSubmitEditing={() => {
+                this.confirmPassword2Input.focus();
+              }}
+              blurOnSubmit={false}
+            />
+            <Input
+              inputContainerStyle={{
+                borderRadius: 40,
+                borderWidth: 1,
+                borderColor: 'rgba(110, 120, 170, 1)',
+                height: 50,
+                width: SCREEN_WIDTH - 50,
+                marginTop: 10,
+                marginBottom: 30,
+              }}
+              leftIcon={
+                <SimpleIcon
+                  name="lock"
+                  color="rgba(110, 120, 170, 1)"
+                  size={25}
+                />
+              }
+              iconContainerStyle={{ marginLeft: 20 }}
+              placeholder="Confirm Password"
+              placeholderTextColor="rgba(110, 120, 170, 1)"
+              inputStyle={{ marginLeft: 10, color: 'white' }}
+              autoCapitalize="none"
+              keyboardAppearance="light"
+              secureTextEntry={true}
+              autoCorrect={false}
+              keyboardType="default"
+              returnKeyType="done"
+              ref={input => (this.confirmPassword2Input = input)}
+              blurOnSubmit={true}
+            />
+            </View>
+                
               </View>
               <Button
                 containerStyle={{ marginVertical: 20 }}
@@ -292,14 +402,15 @@ export default class Profile extends Component {
                   start: [1, 0],
                   end: [0.2, 0],
                 }}
-                title="Message Theresa"
+                title="Save"
                 titleStyle={{
                   fontFamily: 'regular',
                   fontSize: 20,
-                  color: 'white',
+                  color: 'grey',
                   textAlign: 'center',
                 }}
-                onPress={() => console.log('Message Theresa')}
+                onPress={() => console.log(' Submit')}
+                onChangeText={(text) => this.setState({text})}
                 activeOpacity={0.5}
               />
             </ScrollView>
@@ -323,7 +434,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   nameHeader: {
-    color: 'white',
+    color: 'grey',
     fontSize: 22,
     textAlign: 'center',
   },
@@ -336,7 +447,7 @@ const styles = StyleSheet.create({
   },
   infoAnswerLabel: {
     fontSize: 15,
-    color: 'white',
+    color: 'grey',
     fontFamily: 'regular',
     paddingBottom: 10,
   },
