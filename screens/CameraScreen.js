@@ -112,8 +112,8 @@ export default class CameraScreen extends React.Component {
         headers:
         {
           'Content-Type': 'application/json',
-          'x-app-key': '20063fe67146bc6e07993cfc79b04b66',
-          'x-app-id': 'a04a439c'
+          'x-app-key': '0f6b153bc9f5e5e0f8c3c5d65be6000d',
+          'x-app-id': 'e0cf5cff'
         }
       });
       photo.cal= cals.data.foods[0].nf_calories
