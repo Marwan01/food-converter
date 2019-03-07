@@ -16,7 +16,8 @@ export default class CameraScreen extends React.Component {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
     spinner: false,
-    calories:0
+    calories:0,
+    spinnerText="'Sending Api Calls...'"
 
   };
 
@@ -60,7 +61,7 @@ export default class CameraScreen extends React.Component {
             <Spinner
               animation='slide'
               visible={this.state.spinner}
-              textContent={'Sending Api Calls...'}
+              textContent={this.state.spinnerText}
               textStyle={styles.spinnerTextStyle}
             />
           <Camera style={{ flex: 1 }} type={this.state.type}
@@ -105,9 +106,14 @@ export default class CameraScreen extends React.Component {
   snap = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync({base64:true});
-
+      this.setState({
+        spinnerText: "Sending Api call to ClarifAi"
+      });
       let predictions = await clarifai.models.predict(Clarifai.FOOD_MODEL, photo.base64);
       photo.pred = predictions.outputs[0].data.concepts[0].name
+      this.setState({
+        spinnerText: "Sending Api call to Nutritionix"
+      });
       let cals =  await axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', { query: photo.pred}, {
         headers:
         {
@@ -116,7 +122,11 @@ export default class CameraScreen extends React.Component {
           'x-app-id': 'e0cf5cff'
         }
       });
+      
       photo.cal= cals.data.foods[0].nf_calories
+      this.setState({
+        spinnerText: "Done."
+      });
       this.props.navigation.navigate('Info', photo)
       this.camera.stopRecording();
       this.setState({
