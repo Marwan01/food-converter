@@ -9,4 +9,4 @@ Clone the repo and cd in to the folder then execute these two commands:
 npm install
 npm start
 ```
-Finally, use Expo to run the app either on your mobile device or on an emulator.
+Finally, use [Expo](https://github.com/expo/expo)Expo to run the app either on your mobile device or on an emulator.
