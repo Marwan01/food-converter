@@ -1,8 +1,8 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 66857,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://gj-guc.marwanest1.food-converter.exp.direct",
   "packagerNgrokUrl": "https://packager.gj-guc.marwanest1.food-converter.exp.direct",
   "ngrokPid": 66869
