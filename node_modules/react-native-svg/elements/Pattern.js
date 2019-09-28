@@ -1,64 +1,57 @@
-import React, { Component } from "react";
-import { requireNativeComponent } from "react-native";
-import units from "../lib/units";
-import extractTransform from "../lib/extract/extractTransform";
-import extractViewBox from "../lib/extract/extractViewBox";
+import React from 'react';
+import { requireNativeComponent } from 'react-native';
+import extractTransform from '../lib/extract/extractTransform';
+import extractViewBox from '../lib/extract/extractViewBox';
+import units from '../lib/units';
+import Shape from './Shape';
 
-export default class extends Component {
-    static displayName = "Pattern";
+export default class Pattern extends Shape {
+  static displayName = 'Pattern';
 
-    setNativeProps = props => {
-        this.root.setNativeProps(props);
-    };
+  static defaultProps = {
+    x: '0%',
+    y: '0%',
+    width: '100%',
+    height: '100%',
+  };
 
-    render() {
-        const { props } = this;
-        const {
-            patternTransform,
-            transform,
-            id,
-            x,
-            y,
-            width,
-            height,
-            patternUnits,
-            patternContentUnits,
-            children,
-            viewBox,
-            preserveAspectRatio,
-        } = props;
-
-        let extractedTransform;
-        if (patternTransform) {
-            extractedTransform = extractTransform(patternTransform);
-        } else if (transform) {
-            extractedTransform = extractTransform(transform);
-        } else {
-            extractedTransform = extractTransform(props);
+  render() {
+    const { props } = this;
+    const {
+      patternTransform,
+      transform,
+      id,
+      x,
+      y,
+      width,
+      height,
+      patternUnits,
+      patternContentUnits,
+      children,
+      viewBox,
+      preserveAspectRatio,
+    } = props;
+    const matrix = extractTransform(patternTransform || transform || props);
+    return (
+      <RNSVGPattern
+        ref={this.refMethod}
+        name={id}
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        matrix={matrix}
+        patternTransform={matrix}
+        patternUnits={units[patternUnits] || 0}
+        patternContentUnits={
+          patternContentUnits ? units[patternContentUnits] : 1
         }
-
-        return (
-            <RNSVGPattern
-                ref={ele => {
-                    this.root = ele;
-                }}
-                name={id}
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                matrix={extractedTransform}
-                patternTransform={extractedTransform}
-                patternUnits={units[patternUnits] || 0}
-                patternContentUnits={
-                    patternContentUnits ? units[patternContentUnits] : 1
-                }
-                {...extractViewBox({ viewBox, preserveAspectRatio })}
-            >
-                {children}
-            </RNSVGPattern>
-        );
-    }
+        {...extractViewBox({ viewBox, preserveAspectRatio })}
+      >
+        {children}
+      </RNSVGPattern>
+    );
+  }
 }
 
-const RNSVGPattern = requireNativeComponent("RNSVGPattern");
+const RNSVGPattern = requireNativeComponent('RNSVGPattern');

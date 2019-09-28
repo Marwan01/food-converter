@@ -83,7 +83,7 @@
         "curly": 1,                      // specify curly brace conventions for all control statements
         "default-case": 0,               // require default case in switch statements (off by default)
         "dot-notation": 1,               // encourages use of dot notation whenever possible
-        "eqeqeq": 1,                     // require the use of === and !==
+        "eqeqeq": 0,                     // require the use of === and !==
         "guard-for-in": 0,               // make sure for-in loops have an if statement (off by default)
         "no-alert": 0,                   // disallow the use of alert, confirm, and prompt
         "no-caller": 1,                  // disallow use of arguments.caller or arguments.callee
@@ -179,7 +179,7 @@
         "no-underscore-dangle": 0,       // disallow dangling underscores in identifiers
         //"no-wrap-func": 1,               // disallow wrapping of non-IIFE statements in parens
         "no-mixed-spaces-and-tabs": 1,   // disallow mixed spaces and tabs for indentation
-        "quotes": [1, "double", "avoid-escape"], // specify whether double or single quotes should be used
+        "quotes": [1, "single", "avoid-escape"], // specify whether double or single quotes should be used
         "quote-props": 0,                // require quotes around object literal property names (off by default)
         "semi": 1,                       // require or disallow use of semicolons instead of ASI
         "sort-vars": 0,                  // sort variables within the same declaration block (off by default)
@@ -199,7 +199,7 @@
         "max-len": 0,                    // specify the maximum length of a line in your program (off by default)
         "max-params": 0,                 // limits the number of parameters that can be used in the function declaration. (off by default)
         "max-statements": 0,             // specify the maximum number of statement allowed in a function (off by default)
-        "no-bitwise": 1,                 // disallow use of bitwise operators (off by default)
+        "no-bitwise": 0,                 // disallow use of bitwise operators (off by default)
         "no-plusplus": 0,                // disallow use of unary operators, ++ and -- (off by default)
 
         "react/display-name": 0,

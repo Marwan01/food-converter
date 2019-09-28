@@ -12,40 +12,78 @@
 
 const crypto = require('crypto');
 const fs = require('fs');
+const path = require('path');
 
-import type {WorkerOptions as JsWorkerOptions} from '../JSTransformer/worker';
-import type {TransformResultDependency} from '../ModuleGraph/types.flow';
-import type {LocalPath} from '../node-haste/lib/toLocalPath';
-import type {MixedOutput} from './types.flow';
+const {stableHash} = require('metro-cache');
+
+import type Transformer, {
+  JsTransformOptions,
+  JsTransformerConfig,
+} from '../JSTransformer/worker';
+import type {TransformResult} from './types.flow';
 import type {LogEntry} from 'metro-core/src/Logger';
 
-export type WorkerOptions = JsWorkerOptions;
-export type WorkerFn = typeof transform;
-export type TransformerFn<T: MixedOutput> = (
-  string,
-  LocalPath,
-  Buffer,
-  WorkerOptions,
-) => Promise<Result<T>>;
+export type {
+  JsTransformOptions as TransformOptions,
+} from '../JSTransformer/worker';
 
-type Result<T: MixedOutput> = {|
-  output: $ReadOnlyArray<T>,
-  dependencies: $ReadOnlyArray<TransformResultDependency>,
+export type Worker = {|
+  +transform: typeof transform,
 |};
 
-type Data<T: MixedOutput> = {
-  result: Result<T>,
+export type TransformerFn = (
+  string,
+  Buffer,
+  JsTransformOptions,
+) => Promise<TransformResult<>>;
+
+export type TransformerConfig = {
+  transformerPath: string,
+  transformerConfig: JsTransformerConfig,
+};
+
+type Data = $ReadOnly<{|
+  result: TransformResult<>,
   sha1: string,
   transformFileStartLogEntry: LogEntry,
   transformFileEndLogEntry: LogEntry,
-};
+|}>;
 
-async function transform<T: MixedOutput>(
+const transformers: {[string]: Transformer} = {};
+
+function getTransformer(
+  projectRoot: string,
+  {transformerPath, transformerConfig}: TransformerConfig,
+): Transformer {
+  const transformerKey = stableHash([
+    projectRoot,
+    transformerPath,
+    transformerConfig,
+  ]).toString('hex');
+
+  if (transformers[transformerKey]) {
+    return transformers[transformerKey];
+  }
+
+  // eslint-disable-next-line lint/flow-no-fixme
+  // $FlowFixMe Transforming fixed types to generic types during refactor.
+  const Transformer = require(transformerPath);
+  transformers[transformerKey] = new Transformer(
+    projectRoot,
+    transformerConfig,
+  );
+
+  return transformers[transformerKey];
+}
+
+async function transform(
   filename: string,
-  localPath: LocalPath,
-  transformerPath: string,
-  transformerOptions: WorkerOptions,
-): Promise<Data<T>> {
+  transformOptions: JsTransformOptions,
+  projectRoot: string,
+  transformerConfig: TransformerConfig,
+): Promise<Data> {
+  const transformer = getTransformer(projectRoot, transformerConfig);
+
   const transformFileStartLogEntry = {
     action_name: 'Transforming file',
     action_phase: 'start',
@@ -54,19 +92,13 @@ async function transform<T: MixedOutput>(
     start_timestamp: process.hrtime(),
   };
 
-  const data = fs.readFileSync(filename);
+  const data = fs.readFileSync(path.resolve(projectRoot, filename));
   const sha1 = crypto
     .createHash('sha1')
     .update(data)
     .digest('hex');
 
-  // eslint-disable-next-line lint/flow-no-fixme
-  // $FlowFixMe Transforming fixed types to generic types during refactor.
-  const {transform} = (require(transformerPath): {
-    transform: TransformerFn<T>,
-  });
-
-  const result = await transform(filename, localPath, data, transformerOptions);
+  const result = await transformer.transform(filename, data, transformOptions);
 
   const transformFileEndLogEntry = getEndLogEntry(
     transformFileStartLogEntry,
@@ -94,6 +126,6 @@ function getEndLogEntry(startLogEntry: LogEntry, filename: string): LogEntry {
   };
 }
 
-module.exports = {
+((module.exports = {
   transform,
-};
+}): Worker);

@@ -1,60 +1,51 @@
-import React, { Component } from "react";
-import { requireNativeComponent } from "react-native";
-import units from "../lib/units";
-import extractTransform from "../lib/extract/extractTransform";
+import React from 'react';
+import { requireNativeComponent } from 'react-native';
+import extractTransform from '../lib/extract/extractTransform';
+import extractProps, { propsAndStyles } from '../lib/extract/extractProps';
+import units from '../lib/units';
+import Shape from './Shape';
 
-export default class extends Component {
-    static displayName = "Mask";
+export default class Mask extends Shape {
+  static displayName = 'Mask';
 
-    setNativeProps = props => {
-        this.root.setNativeProps(props);
-    };
+  static defaultProps = {
+    x: '0%',
+    y: '0%',
+    width: '100%',
+    height: '100%',
+  };
 
-    render() {
-        const { props } = this;
-        const {
-            maskTransform,
-            transform,
-            id,
-            x,
-            y,
-            width,
-            height,
-            maskUnits,
-            maskContentUnits,
-            children,
-        } = props;
-
-        let extractedTransform;
-        if (maskTransform) {
-            extractedTransform = extractTransform(maskTransform);
-        } else if (transform) {
-            extractedTransform = extractTransform(transform);
-        } else {
-            extractedTransform = extractTransform(props);
+  render() {
+    const { props } = this;
+    const {
+      maskTransform,
+      transform,
+      x,
+      y,
+      width,
+      height,
+      maskUnits,
+      maskContentUnits,
+      children,
+    } = props;
+    return (
+      <RNSVGMask
+        ref={this.refMethod}
+        {...extractProps({ ...propsAndStyles(props), x: null, y: null }, this)}
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        maskTransform={extractTransform(maskTransform || transform || props)}
+        maskUnits={maskUnits !== undefined ? units[maskUnits] : 0}
+        maskContentUnits={
+          maskContentUnits !== undefined ? units[maskContentUnits] : 1
         }
-
-        return (
-            <RNSVGMask
-                ref={ele => {
-                    this.root = ele;
-                }}
-                name={id}
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                matrix={extractedTransform}
-                maskTransform={extractedTransform}
-                maskUnits={maskUnits !== undefined ? units[maskUnits] : 0}
-                maskContentUnits={
-                    maskContentUnits !== undefined ? units[maskContentUnits] : 1
-                }
-            >
-                {children}
-            </RNSVGMask>
-        );
-    }
+      >
+        {children}
+      </RNSVGMask>
+    );
+  }
 }
 
-const RNSVGMask = requireNativeComponent("RNSVGMask");
+const RNSVGMask = requireNativeComponent('RNSVGMask');

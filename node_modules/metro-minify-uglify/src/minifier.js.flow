@@ -12,60 +12,44 @@
 
 const uglify = require('uglify-es');
 
-import type {
-  MetroMinifier,
-  ResultWithMap,
-  ResultWithoutMap,
-  MinifyOptions,
-} from './types.js.flow';
 import type {BabelSourceMap} from '@babel/core';
+import type {
+  MinifierResult,
+  MinifierOptions,
+} from 'metro/src/shared/types.flow.js';
 
-function noSourceMap(
-  code: string,
-  options?: MinifyOptions = {},
-): ResultWithoutMap {
-  return minify(code, undefined, options).code;
-}
+function minifier(options: MinifierOptions): MinifierResult {
+  const result = minify(options);
 
-function withSourceMap(
-  code: string,
-  sourceMap: ?BabelSourceMap,
-  filename: string,
-  options?: MinifyOptions = {},
-): ResultWithMap {
-  const result = minify(code, sourceMap, options);
+  if (!options.map || result.map == null) {
+    return {code: result.code};
+  }
+
   const map: BabelSourceMap = JSON.parse(result.map);
-
-  map.sources = [filename];
+  map.sources = [options.filename];
 
   return {code: result.code, map};
 }
 
-function minify(
-  inputCode: string,
-  inputMap: ?BabelSourceMap,
-  options: MinifyOptions,
-) {
-  const result = uglify.minify(inputCode, {
+function minify({
+  code,
+  map,
+  reserved,
+  config,
+}: MinifierOptions): {code: string, map: ?string} {
+  const options = {
+    ...config,
     mangle: {
-      toplevel: false,
-      reserved: options.reserved,
-    },
-    output: {
-      ascii_only: true,
-      quote_style: 3,
-      wrap_iife: true,
+      ...config.mangle,
+      reserved,
     },
     sourceMap: {
-      content: inputMap,
-      includeSources: false,
+      ...config.sourceMap,
+      content: map,
     },
-    toplevel: false,
-    compress: {
-      // reduce_funcs inlines single-use function, which cause perf regressions.
-      reduce_funcs: false,
-    },
-  });
+  };
+
+  const result = uglify.minify(code, options);
 
   if (result.error) {
     throw result.error;
@@ -73,13 +57,10 @@ function minify(
 
   return {
     code: result.code,
+    // eslint-disable-next-line lint/flow-no-fixme
+    // $FlowFixMe flow cannot coerce the uglify options after using spread.
     map: result.map,
   };
 }
 
-const metroMinifier: MetroMinifier = {
-  noSourceMap,
-  withSourceMap,
-};
-
-module.exports = metroMinifier;
+module.exports = minifier;

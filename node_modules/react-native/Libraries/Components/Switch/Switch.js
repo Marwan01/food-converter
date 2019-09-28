@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -109,7 +109,7 @@ class Switch extends React.Component<Props> {
       _thumbColor = thumbTintColor;
       if (__DEV__) {
         console.warn(
-          'Switch: `thumbTintColor` is deprecated, use `_thumbColor` instead.',
+          'Switch: `thumbTintColor` is deprecated, use `thumbColor` instead.',
         );
       }
     }
@@ -137,6 +137,8 @@ class Switch extends React.Component<Props> {
             on: value === true,
             style,
             thumbTintColor: _thumbColor,
+            trackColorForFalse: _trackColorForFalse,
+            trackColorForTrue: _trackColorForTrue,
             trackTintColor:
               value === true ? _trackColorForTrue : _trackColorForFalse,
           }: NativeAndroidProps)
@@ -164,6 +166,7 @@ class Switch extends React.Component<Props> {
       <SwitchNativeComponent
         {...props}
         {...platformProps}
+        accessibilityRole={props.accessibilityRole ?? 'button'}
         onChange={this._handleChange}
         onResponderTerminationRequest={returnsFalse}
         onStartShouldSetResponder={returnsTrue}

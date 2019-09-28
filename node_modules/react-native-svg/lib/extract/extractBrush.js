@@ -1,29 +1,34 @@
-import Color from "color";
-import patternReg from "./patternReg";
+import extractColor, { integerColor } from './extractColor';
 
-export default function(colorOrBrush) {
-    if (colorOrBrush === "none" || !colorOrBrush) {
-        return null;
-    }
+const urlIdPattern = /^url\(#(.+)\)$/;
 
-    if (colorOrBrush === "currentColor") {
-        return [2];
+const currentColorBrush = [2];
+
+export default function extractBrush(color) {
+  if (typeof color === 'number') {
+    if (color >>> 0 === color && color >= 0 && color <= 0xffffffff) {
+      return [0, integerColor(color)];
     }
-    try {
-        const matched = colorOrBrush.match(patternReg);
-        // brush
-        if (matched) {
-            return [1, matched[1]];
-            //todo:
-        } else {
-            // solid color
-            const [r, g, b, a = 1] = Color(colorOrBrush)
-                .rgb()
-                .array();
-            return [0, r / 255, g / 255, b / 255, a];
-        }
-    } catch (err) {
-        console.warn(`"${colorOrBrush}" is not a valid color or brush`);
-        return null;
-    }
+  }
+
+  if (!color || color === 'none') {
+    return null;
+  }
+
+  if (color === 'currentColor') {
+    return currentColorBrush;
+  }
+
+  const brush = typeof color === 'string' && color.match(urlIdPattern);
+  if (brush) {
+    return [1, brush[1]];
+  }
+
+  const int32ARGBColor = extractColor(color);
+  if (typeof int32ARGBColor === 'number') {
+    return [0, int32ARGBColor];
+  }
+
+  console.warn(`"${color}" is not a valid color or brush`);
+  return null;
 }

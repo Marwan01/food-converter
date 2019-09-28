@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -156,6 +156,9 @@ RCT_EXPORT_MODULE()
   if (!_devMenuItem) {
     __weak __typeof__(self) weakSelf = self;
     __weak RCTDevSettings *devSettings = self.bridge.devSettings;
+    if (devSettings.isPerfMonitorShown) {
+      [weakSelf show];
+    }
     _devMenuItem =
     [RCTDevMenuItem buttonItemWithTitleBlock:^NSString *{
       return (devSettings.isPerfMonitorShown) ?

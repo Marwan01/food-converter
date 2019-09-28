@@ -1,55 +1,52 @@
-import { PanResponder } from "react-native";
-import _ from "lodash";
+import { PanResponder } from 'react-native';
 
-const responderProps = [
-    ...Object.keys(PanResponder.create({}).panHandlers),
-    "pointerEvents"
-];
+const responderProps = Object.keys(PanResponder.create({}).panHandlers);
+const numResponderProps = responderProps.length;
 
-const touchableProps = [
-    "disabled",
-    "onPress",
-    "onPressIn",
-    "onPressOut",
-    "onLongPress",
-    "delayPressIn",
-    "delayPressOut",
-    "delayLongPress",
-];
+function hasTouchableProperty(props) {
+  return (
+    props.disabled != null ||
+    props.onPress ||
+    props.onPressIn ||
+    props.onPressOut ||
+    props.onLongPress ||
+    props.delayPressIn ||
+    props.delayPressOut ||
+    props.delayLongPress
+  );
+}
 
-export default function(props, ref) {
-    const extractedProps = {};
+export default function extractResponder(props, ref) {
+  const o = {};
 
-    _.forEach(responderProps, (key) => {
-        const value = props[key];
-        if (props[key]) {
-            if (!extractedProps.responsible && key !== "pointerEvents") {
-                extractedProps.responsible = true;
-            }
+  let responsible = false;
+  for (let i = 0; i < numResponderProps; i++) {
+    const key = responderProps[i];
+    const value = props[key];
+    if (value) {
+      responsible = true;
+      o[key] = value;
+    }
+  }
 
-            extractedProps[key] = value;
-        }
-    });
+  const pointerEvents = props.pointerEvents;
+  if (pointerEvents) {
+    o.pointerEvents = pointerEvents;
+  }
 
-    _.every(touchableProps, (key) => {
-        if (!props[key]) {
-            return true;
-        }
+  if (hasTouchableProperty(props)) {
+    responsible = true;
+    o.onResponderMove = ref.touchableHandleResponderMove;
+    o.onResponderGrant = ref.touchableHandleResponderGrant;
+    o.onResponderRelease = ref.touchableHandleResponderRelease;
+    o.onResponderTerminate = ref.touchableHandleResponderTerminate;
+    o.onStartShouldSetResponder = ref.touchableHandleStartShouldSetResponder;
+    o.onResponderTerminationRequest = ref.touchableHandleResponderTerminationRequest;
+  }
 
-        extractedProps.responsible = true;
-        Object.assign(extractedProps, {
-            onStartShouldSetResponder:
-                ref.touchableHandleStartShouldSetResponder,
-            onResponderTerminationRequest:
-                ref.touchableHandleResponderTerminationRequest,
-            onResponderGrant: ref.touchableHandleResponderGrant,
-            onResponderMove: ref.touchableHandleResponderMove,
-            onResponderRelease: ref.touchableHandleResponderRelease,
-            onResponderTerminate: ref.touchableHandleResponderTerminate,
-        });
+  if (responsible) {
+    o.responsible = true;
+  }
 
-        return false;
-    });
-
-    return extractedProps;
+  return o;
 }

@@ -1,138 +1,151 @@
-//noinspection JSUnresolvedVariable
-import React from "react";
+import React from 'react';
 import {
-    requireNativeComponent,
-    StyleSheet,
-    findNodeHandle,
-    NativeModules,
-} from "react-native";
-import extractResponder from "../lib/extract/extractResponder";
-import extractViewBox from "../lib/extract/extractViewBox";
-import Shape from "./Shape";
-import G from "./G";
-import _ from "lodash";
+  requireNativeComponent,
+  StyleSheet,
+  findNodeHandle,
+  NativeModules,
+} from 'react-native';
+import extractResponder from '../lib/extract/extractResponder';
+import extractViewBox from '../lib/extract/extractViewBox';
+import Shape from './Shape';
+import G from './G';
 
-/** @namespace NativeModules.RNSVGSvgViewManager */
 const RNSVGSvgViewManager = NativeModules.RNSVGSvgViewManager;
 
-// Svg - Root node of all Svg elements
-let id = 0;
-
 const styles = StyleSheet.create({
-    svg: {
-        backgroundColor: "transparent",
-        borderWidth: 0,
-    },
+  svg: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+  },
 });
 
-const gProps = [
-    "font",
-    "transform",
-    "fill",
-    "fillOpacity",
-    "fillRule",
-    "stroke",
-    "strokeWidth",
-    "strokeOpacity",
-    "strokeDasharray",
-    "strokeDashoffset",
-    "strokeLinecap",
-    "strokeLinejoin",
-    "strokeMiterlimit",
-];
+export default class Svg extends Shape {
+  static displayName = 'Svg';
 
-class Svg extends Shape {
-    static displayName = "Svg";
+  static defaultProps = {
+    preserveAspectRatio: 'xMidYMid meet',
+  };
 
-    static defaultProps = {
-        preserveAspectRatio: "xMidYMid meet",
-    };
+  measureInWindow = (...args) => {
+    this.root.measureInWindow(...args);
+  };
 
-    constructor() {
-        super(...arguments);
-        this.id = ++id;
+  measure = (...args) => {
+    this.root.measure(...args);
+  };
+
+  measureLayout = (...args) => {
+    this.root.measureLayout(...args);
+  };
+
+  setNativeProps = props => {
+    const { width, height } = props;
+    if (width) {
+      props.bbWidth = width;
     }
-    measureInWindow = (...args) => {
-        this.root.measureInWindow(...args);
-    };
+    if (height) {
+      props.bbHeight = height;
+    }
+    this.root.setNativeProps(props);
+  };
 
-    measure = (...args) => {
-        this.root.measure(...args);
-    };
+  toDataURL = (callback, options) => {
+    if (!callback) {
+      return;
+    }
+    const handle = findNodeHandle(this.root);
+    RNSVGSvgViewManager.toDataURL(handle, options, callback);
+  };
 
-    measureLayout = (...args) => {
-        this.root.measureLayout(...args);
+  render() {
+    const {
+      opacity,
+      viewBox,
+      preserveAspectRatio,
+      style,
+      children,
+      onLayout,
+      ...props
+    } = this.props;
+    const stylesAndProps = {
+      ...(style && style.length ? Object.assign({}, ...style) : style),
+      ...props,
     };
+    const {
+      color,
+      width,
+      height,
 
-    setNativeProps = props => {
-        if (props.width) {
-            props.bbWidth = `${props.width}`;
+      // Inherited G properties
+      font,
+      transform,
+      fill,
+      fillOpacity,
+      fillRule,
+      stroke,
+      strokeWidth,
+      strokeOpacity,
+      strokeDasharray,
+      strokeDashoffset,
+      strokeLinecap,
+      strokeLinejoin,
+      strokeMiterlimit,
+    } = stylesAndProps;
+
+    const w = parseInt(width, 10);
+    const h = parseInt(height, 10);
+    const doNotParseWidth = isNaN(w) || width[width.length - 1] === '%';
+    const doNotParseHeight = isNaN(h) || height[height.length - 1] === '%';
+    const dimensions =
+      width && height
+        ? {
+            width: doNotParseWidth ? width : w,
+            height: doNotParseHeight ? height : h,
+            flex: 0,
+          }
+        : null;
+
+    const o = +opacity;
+    const opacityStyle = !isNaN(o)
+      ? {
+          opacity: o,
         }
-        if (props.height) {
-            props.bbHeight = `${props.height}`;
-        }
-        this.root.setNativeProps(props);
-    };
+      : null;
 
-    toDataURL = callback => {
-        callback &&
-            RNSVGSvgViewManager.toDataURL(findNodeHandle(this.root), callback);
-    };
-
-    render() {
-        const {
-            opacity,
-            viewBox,
-            preserveAspectRatio,
-            style,
+    return (
+      <NativeSvgView
+        {...props}
+        bbWidth={width}
+        bbHeight={height}
+        tintColor={color}
+        onLayout={onLayout}
+        ref={this.refMethod}
+        style={[styles.svg, style, opacityStyle, dimensions]}
+        {...extractResponder(props, this)}
+        {...extractViewBox({ viewBox, preserveAspectRatio })}
+      >
+        <G
+          {...{
             children,
-            onLayout,
-            ...props
-        } = this.props;
-        const stylesAndProps = { ...(style && style.length ? Object.assign({}, ...style) : style), ...props };
-        const { color, width, height } = stylesAndProps;
-
-        let dimensions;
-        if (width && height) {
-            dimensions = {
-                width: width[width.length - 1] === "%" ? width : +width,
-                height: height[height.length - 1] === "%" ? height : +height,
-                flex: 0,
-            };
-        }
-
-        const w = `${width}`;
-        const h = `${height}`;
-
-        return (
-            <NativeSvgView
-                {...props}
-                bbWidth={w}
-                bbHeight={h}
-                tintColor={color}
-                onLayout={onLayout}
-                {...extractResponder(props, this)}
-                {...extractViewBox({ viewBox, preserveAspectRatio })}
-                ref={ele => {
-                    this.root = ele;
-                }}
-                style={[
-                    styles.svg,
-                    style,
-                    !isNaN(+opacity) && {
-                        opacity: +opacity,
-                    },
-                    dimensions,
-                ]}
-            >
-                <G style={style} {...(_.pick(stylesAndProps, gProps))}>
-                    {children}
-                </G>
-            </NativeSvgView>
-        );
-    }
+            style,
+            font,
+            transform,
+            fill,
+            fillOpacity,
+            fillRule,
+            stroke,
+            strokeWidth,
+            strokeOpacity,
+            strokeDasharray,
+            strokeDashoffset,
+            strokeLinecap,
+            strokeLinejoin,
+            strokeMiterlimit,
+          }}
+        />
+      </NativeSvgView>
+    );
+  }
 }
 
-const NativeSvgView = requireNativeComponent("RNSVGSvgView");
-
-export default Svg;
+const NativeSvgView = requireNativeComponent('RNSVGSvgView');

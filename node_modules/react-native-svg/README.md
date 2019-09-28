@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/npm/v/react-native-svg.svg)](https://www.npmjs.com/package/react-native-svg)
 [![NPM](https://img.shields.io/npm/dm/react-native-svg.svg)](https://www.npmjs.com/package/react-native-svg)
 
-`react-native-svg` is built to provide a SVG interface to react native on both iOS and Android.
+`react-native-svg` provides SVG support to React Native on iOS and Android, and a compatibility layer for the web.
 
 [Check out the demo](https://snack.expo.io/@msand/react-native-svg-example)
 
@@ -12,9 +12,46 @@
 1. Supports most SVG elements and properties (Rect, Circle, Line, Polyline, Polygon, G ...).
 2. Easy to [convert SVG code](https://svgr.now.sh/) to react-native-svg.
 
+- [Installation](#installation)
+    - [Automatically](#automatically)
+    - [Manually](#manually)
+        - [Android](#android)
+        - [iOS](#ios)
+- [Troubleshooting](#troubleshooting)
+- [Usage](#usage)
+    - [Use with content loaded from uri](#use-with-content-loaded-from-uri)
+    - [Use with svg files](#use-with-svg-files)
+- [Common props](#common-props)
+- [Supported elements](#supported-elements)
+    - [Svg](#svg)
+    - [Rect](#rect)
+    - [Circle](#circle)
+    - [Ellipse](#ellipse)
+    - [Line](#line)
+    - [Polygon](#polygon)
+    - [Polyline](#polyline)
+    - [Path](#path)
+    - [Text](#text)
+    - [TSpan](#tspan)
+    - [TextPath](#textpath)
+    - [G](#g)
+    - [Use](#use)
+    - [Symbol](#symbol)
+    - [Defs](#defs)
+    - [Image](#image)
+    - [ClipPath](#clippath)
+    - [LinearGradient](#lineargradient)
+    - [RadialGradient](#radialgradient)
+    - [Mask](#mask)
+    - [Pattern](#pattern)
+- [Touch Events](#touch-events)
+- [Run example](#run-example)
+- [TODO](#todo)
+- [Known issues](#known-issues)
+
 ### Installation
 
-#### Automatic
+#### Automatically
 
 *With Expo, this is pre-installed. Jump ahead to [Usage](#Usage)*
 
@@ -33,15 +70,15 @@
 
 # NOTICE:
 
-Due to breaking changes in react-native, the version given in the left column 
+Due to breaking changes in react-native, the version given in the left column
 (and higher versions) of react-native-svg only supports the react-native version
 in the right column (and higher versions, if possible).
 
-It is recommended to use the version of react given in the peer dependencies 
+It is recommended to use the version of react given in the peer dependencies
 of the react-native version you are using.
 
 The latest version of react-native-svg should always work in a clean react-native project.
-    
+
 | react-native-svg | react-native |
 |------------------|--------------|
 | 3.2.0            | 0.29         |
@@ -55,10 +92,13 @@ The latest version of react-native-svg should always work in a clean react-nativ
 | 5.4.1            | 0.47         |
 | 5.5.1            | >=0.50       |
 | 6.0.0            | >=0.50       |
-| 7.0.0            | >=0.50       |
-| 8.0.0            | >=0.50       |
+| 7.0.0            | >=0.57.4     |
+| 8.0.0            | >=0.57.4     |
 
-#### Manual
+Or, include [this PR](https://github.com/facebook/react-native/pull/17842) manually for v7+ stability on android for older RN ( [included in 0.57-stable](https://github.com/facebook/react-native/commit/d9f5319cf0d9828b29d0e350284b22ce29985042) and newer)
+
+
+#### Manually
 
 ##### Android
 
@@ -77,7 +117,7 @@ The latest version of react-native-svg should always work in a clean react-nativ
     implementation project(':react-native-svg')
 	```
 
-4. Open up `android/app/src/main/java/[...]/MainApplication.java
+4. Open up `android/app/src/main/java/[...]/MainApplication.java`
   - Add `import com.horcrux.svg.SvgPackage;` to the imports at the top of the file
   - Add `new SvgPackage()` to the list returned by the `getPackages()` method. Add a comma to the previous item if there's already something there.
 
@@ -87,9 +127,9 @@ The latest version of react-native-svg should always work in a clean react-nativ
 
 To install react-native-svg on iOS visit the link referenced above or do the following:
 
-1. Open your project in XCode and drag the RNSVG.xcodeproj file (located in .../node_modules/react-native-svg/ios) into the Libraries directory shown in XCode.
-2. Expand the RNSVG.xcodeproj file you just added to XCode until you see: libRNSVG.a (located in RNSVG.xcodeproj > Products )
-3. Drag libRNSVG.a into the Link Binary With Libraries section (located in Build Phases which may be found at the top of the XCode window)
+1. Open your project in XCode and drag the `RNSVG.xcodeproj` file (located in `.../node_modules/react-native-svg/ios`) into the Libraries directory shown in XCode.
+2. Expand the `RNSVG.xcodeproj` file you just added to XCode until you see: `libRNSVG.a` (located in `RNSVG.xcodeproj` > `Products` )
+3. Drag `libRNSVG.a` into the Link Binary With Libraries section (located in Build Phases which may be found at the top of the XCode window)
 
 ###### CocoaPods
 
@@ -140,18 +180,20 @@ npm i react-native-svg
 react-native link
 ```
 
-Make a reproduction of the problem in App.js
-    
+Make a reproduction of the problem in `App.js`
+
 ```bash
 react-native run-ios
 react-native run-android
 ```
 
-Verify that it is still an issue with the latest version. If so, open a new issue, include the entire App.js file, specify what platforms you've tested, and the results of running this command:
+Verify that it is still an issue with the latest version. If so, open a new issue, include the entire `App.js` file, specify what platforms you've tested, and the results of running this command:
 
 ```bash
 react-native info
 ```
+
+If you suspect that you've found a spec conformance bug, then you can test using your component in a react-native-web project by forking this codesandbox, to see how different browsers render the same content: https://codesandbox.io/s/pypn6mn3y7
 
 ### <a name="Usage">Usage</a>
 
@@ -192,10 +234,7 @@ const { Circle, Rect } = Svg;
 */
 
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-
-// Percentages work in plain react-native but aren't supported in Expo yet, workaround with this or onLayout
-const { width, height } = Dimensions.get('window');
+import { View, StyleSheet } from 'react-native';
 
 export default class SvgExample extends React.Component {
   render() {
@@ -205,7 +244,7 @@ export default class SvgExample extends React.Component {
           StyleSheet.absoluteFill,
           { alignItems: 'center', justifyContent: 'center' },
         ]}>
-        <Svg height={height * 0.5} width={width * 0.5} viewBox="0 0 100 100">
+        <Svg height="50%" width="50%" viewBox="0 0 100 100">
           <Circle
             cx="50"
             cy="50"
@@ -231,6 +270,93 @@ export default class SvgExample extends React.Component {
 ```
 
 [Try this on Snack](https://snack.expo.io/@msand/react-native-svg-example)
+
+### Use with content loaded from uri
+
+Try [react-native-svg-uri](https://github.com/vault-development/react-native-svg-uri)
+```jsx
+import * as React from 'react';
+import SvgUri from 'react-native-svg-uri';
+
+export default () => (
+  <SvgUri
+    width="200"
+    height="200"
+    source={{
+      uri: 'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg',
+    }}
+  />
+);
+```
+
+### Use with svg files
+
+Try [react-native-svg-transformer](https://github.com/kristerkari/react-native-svg-transformer) to get compile time conversion and cached transformations.
+https://github.com/kristerkari/react-native-svg-transformer#installation-and-configuration
+https://github.com/kristerkari/react-native-svg-transformer#for-react-native-v057-or-newer--expo-sdk-v3100-or-newer
+
+`metro.config.js`
+
+```js
+const { getDefaultConfig } = require("metro-config");
+
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts }
+  } = await getDefaultConfig();
+  return {
+    transformer: {
+      babelTransformerPath: require.resolve("react-native-svg-transformer")
+    },
+    resolver: {
+      assetExts: assetExts.filter(ext => ext !== "svg"),
+      sourceExts: [...sourceExts, "svg"]
+    }
+  };
+})();
+```
+
+Import your .svg file inside a React component:
+
+```jsx
+import Logo from "./logo.svg";
+```
+
+You can then use your image as a component:
+
+```jsx
+<Logo width={120} height={40} />
+```
+
+Alternatively, you can use [react-native-svg-uri](https://github.com/vault-development/react-native-svg-uri) with [babel-plugin-inline-import](https://github.com/credcollective/babel-plugin-inline-import/), but with transforms done at run-time.
+
+.babelrc
+```json
+{
+  "presets": ["module:metro-react-native-babel-preset"],
+  "plugins": [
+    ["babel-plugin-inline-import", {
+      "extensions": [
+        ".svg"
+      ]
+    }]
+  ]
+}
+```
+
+App.js
+```jsx
+import * as React from 'react';
+import SvgUri from 'react-native-svg-uri';
+import testSvg from './test.svg';
+export default () => (
+  <SvgUri
+    width="200"
+    height="200"
+    svgXmlData={testSvg}
+  />
+);
+```
 
 ### Common props:
 
@@ -271,6 +397,33 @@ originY         | 0          | Transform originY coordinates for the current obj
     <Path d="M 40 60 A 10 10 0 0 0 60 60" stroke="black" />
 </Svg>
 ```
+
+Colors set in the Svg element are inherited by its children:
+
+```html
+<Svg
+    width="130"
+    height="130"
+    fill="blue"
+    stroke="red"
+    color="green"
+    viewBox="-16 -16 544 544"
+>
+    <Path
+        d="M318.37,85.45L422.53,190.11,158.89,455,54.79,350.38ZM501.56,60.2L455.11,13.53a45.93,45.93,0,0,0-65.11,0L345.51,58.24,449.66,162.9l51.9-52.15A35.8,35.8,0,0,0,501.56,60.2ZM0.29,497.49a11.88,11.88,0,0,0,14.34,14.17l116.06-28.28L26.59,378.72Z"
+        strokeWidth="32"
+    />
+    <Path d="M0,0L512,512" stroke="currentColor" strokeWidth="32" />
+</Svg>
+```
+
+![Pencil](https://raw.githubusercontent.com/react-native-community/react-native-svg/master/screenShoots/pencil.png)
+
+  Code explanation:
+
+  * The fill prop defines the color inside the object.
+  * The stroke prop defines the color of the line drawn around the object.
+  * The color prop is a bit special in the sense that it won't color anything by itself, but define a kind of color variable that can be used by children elements. In this example we're defining a "green" color in the Svg element and using it in the second Path element via stroke="currentColor". The "currentColor" is what refers to that "green" value, and it can be used in other props that accept colors too, e.g. fill="currentColor".
 
 ### Rect
 

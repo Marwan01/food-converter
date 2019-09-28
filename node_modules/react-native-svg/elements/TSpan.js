@@ -1,46 +1,40 @@
-import React from "react";
-import _ from "lodash";
-import { requireNativeComponent } from "react-native";
-import extractText from "../lib/extract/extractText";
-import extractProps from "../lib/extract/extractProps";
-import extractTransform from "../lib/extract/extractTransform";
-import Shape from "./Shape";
+import React from 'react';
+import { requireNativeComponent } from 'react-native';
+import extractProps, { propsAndStyles } from '../lib/extract/extractProps';
+import extractTransform from '../lib/extract/extractTransform';
+import extractText, { setTSpan } from '../lib/extract/extractText';
+import { pickNotNil } from '../lib/util';
+import Shape from './Shape';
 
-// TSpan elements are shadow components
 export default class TSpan extends Shape {
-    static displayName = "TSpan";
+  static displayName = 'TSpan';
 
-    setNativeProps = props => {
-        const matrix = !props.matrix && extractTransform(props);
-        if (matrix) {
-            props.matrix = matrix;
-        }
-        const text = _.pickBy(extractText(props, true, TSpan), p => !_.isNil(p));
-        this.root.setNativeProps({
-            ...props,
-            ...text,
-        });
-    };
-
-    render() {
-        const props = this.props;
-        return (
-            <RNSVGTSpan
-                ref={ele => {
-                    this.root = ele;
-                }}
-                {...extractProps(
-                    {
-                        ...props,
-                        x: null,
-                        y: null,
-                    },
-                    this,
-                )}
-                {...extractText(props, false, TSpan)}
-            />
-        );
+  setNativeProps = props => {
+    const matrix = !props.matrix && extractTransform(props);
+    if (matrix) {
+      props.matrix = matrix;
     }
+    const prop = propsAndStyles(props);
+    Object.assign(prop, pickNotNil(extractText(prop, false)));
+    this.root.setNativeProps(prop);
+  };
+
+  render() {
+    const prop = propsAndStyles(this.props);
+    const props = extractProps(
+      {
+        ...prop,
+        x: null,
+        y: null,
+      },
+      this,
+    );
+    Object.assign(props, extractText(prop, false));
+    props.ref = this.refMethod;
+    return <RNSVGTSpan {...props} />;
+  }
 }
 
-const RNSVGTSpan = requireNativeComponent("RNSVGTSpan");
+setTSpan(TSpan);
+
+const RNSVGTSpan = requireNativeComponent('RNSVGTSpan');

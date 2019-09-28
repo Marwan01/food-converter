@@ -1,14 +1,20 @@
-import { Component } from "react";
+import { Component } from 'react';
 
-export default class extends Component {
-    static displayName = "Stop";
+export default class Stop extends Component {
+  static displayName = 'Stop';
 
-    static defaultProps = {
-        stopColor: "#000",
-        stopOpacity: 1,
-    };
-
-    render() {
-        return null;
+  static defaultProps = {
+    stopColor: '#000',
+    stopOpacity: 1,
+  };
+  setNativeProps = () => {
+    const { parent } = this.props;
+    if (parent) {
+      parent.forceUpdate();
     }
+  };
+
+  render() {
+    return null;
+  }
 }

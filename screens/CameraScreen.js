@@ -17,7 +17,7 @@ export default class CameraScreen extends React.Component {
     type: Camera.Constants.Type.back,
     spinner: false,
     calories:0,
-    spinnerText="'Sending Api Calls...'"
+    // spinnerText="Sending Api Calls..."
 
   };
 

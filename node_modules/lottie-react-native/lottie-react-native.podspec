@@ -12,9 +12,9 @@ Pod::Spec.new do |s|
   s.license      = package['license']
   s.platform     = :ios, "8.0"
 
-  s.source       = { :git => "https://github.com/airbnb/lottie-react-native.git", :tag => "v#{s.version}" }
+  s.source       = { :git => "https://github.com/react-community/lottie-react-native.git", :tag => "v#{s.version}" }
   s.source_files  = "src/ios/**/*.{h,m}"
 
   s.dependency 'React'
-  s.dependency 'lottie-ios'
+  s.dependency 'lottie-ios', '~> 2.5.0'
 end

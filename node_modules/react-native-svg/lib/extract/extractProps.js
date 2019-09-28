@@ -1,52 +1,56 @@
-import extractFill from "./extractFill";
-import extractStroke from "./extractStroke";
-import extractTransform, { props2transform } from "./extractTransform";
-import extractClipPath from "./extractClipPath";
-import extractResponder from "./extractResponder";
-import extractOpacity from "./extractOpacity";
-import urlRegex from "./patternReg";
+import extractFill from './extractFill';
+import extractStroke from './extractStroke';
+import { transformToMatrix, props2transform } from './extractTransform';
+import extractClipPath from './extractClipPath';
+import extractResponder from './extractResponder';
+import extractOpacity from './extractOpacity';
+import { idPattern } from '../util';
 
-export default function(prop, ref) {
-    const props = { ...prop.style, ...prop };
-    const { opacity, onLayout, id, clipPath, mask } = props;
-    const styleProperties = [];
+export function propsAndStyles(props) {
+  const style = props.style;
+  return {
+    ...(style && style.length ? Object.assign({}, ...style) : style),
+    ...props,
+  };
+}
 
-    const extractedProps = {
-        opacity: extractOpacity(opacity),
-        propList: styleProperties,
-        onLayout,
-    };
+export default function extractProps(props, ref) {
+  const { opacity, onLayout, id, clipPath, mask } = props;
+  const styleProperties = [];
+  const transformProps = props2transform(props);
+  const matrix = transformToMatrix(transformProps, props.transform);
+  const extractedProps = {
+    matrix,
+    onLayout,
+    ...transformProps,
+    propList: styleProperties,
+    opacity: extractOpacity(opacity),
+    ...extractResponder(props, ref),
+    ...extractFill(props, styleProperties),
+    ...extractStroke(props, styleProperties),
+  };
 
-    if (id) {
-        extractedProps.name = id;
+  if (id) {
+    extractedProps.name = id;
+  }
+
+  if (clipPath) {
+    Object.assign(extractedProps, extractClipPath(props));
+  }
+
+  if (mask) {
+    const matched = mask.match(idPattern);
+
+    if (matched) {
+      extractedProps.mask = matched[1];
+    } else {
+      console.warn(
+        'Invalid `mask` prop, expected a mask like "#id", but got: "' +
+          mask +
+          '"',
+      );
     }
+  }
 
-    if (clipPath) {
-        Object.assign(extractedProps, extractClipPath(props));
-    }
-
-    if (mask) {
-        const matched = mask.match(urlRegex);
-
-        if (matched) {
-            extractedProps.mask = matched[1];
-        } else {
-            console.warn(
-                'Invalid `mask` prop, expected a mask like `"#id"`, but got: "' +
-                    mask +
-                    '"',
-            );
-        }
-    }
-
-    Object.assign(extractedProps, extractStroke(props, styleProperties));
-    Object.assign(extractedProps, extractFill(props, styleProperties));
-
-    extractedProps.matrix = extractTransform(props);
-
-    Object.assign(extractedProps, props2transform(props));
-
-    Object.assign(extractedProps, extractResponder(props, ref));
-
-    return extractedProps;
+  return extractedProps;
 }
