@@ -10,7 +10,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { Input, SearchBar, Icon, Button } from 'react-native-elements';
-import { Font } from 'expo';
+import * as Font  from 'expo-font';
 import { TextInput } from 'react-native-paper';
 
 

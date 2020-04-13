@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Camera, Permissions } from 'expo';
+import { Camera } from 'expo-camera';
+import * as Permissions from 'expo-permissions';
 import { Icon } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
 const axios = require("axios");
