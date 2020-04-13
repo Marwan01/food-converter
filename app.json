@@ -3,7 +3,6 @@
     "name": "FoodConverter",
     "slug": "FoodConverter",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android"
@@ -24,7 +23,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.yourappname"
+      "bundleIdentifier": "com.mar.food-converter"
     },
     "description": "Take a picture of a food item and get instant feedback on the types/amount of workouts you will need to do to burn the calories generated from that food.",
     "githubUrl": "https://github.com/Marwan01/FoodConverter"
