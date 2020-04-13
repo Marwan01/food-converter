@@ -15,7 +15,7 @@
     "@expo/vector-icons": "^10.0.5",
     "axios": "^0.18.0",
     "clarifai": "^2.9.0",
-    "expo": "^33.0.0",
+    "expo": "^35.0.0",
     "expo-font": "^5.0.1",
     "fastlane": "^0.1.0",
     "link": "^0.1.5",
